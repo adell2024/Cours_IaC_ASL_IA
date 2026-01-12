@@ -112,3 +112,59 @@ ssh ubuntu@10.0.0.10 "kubectl get nodes"
 NAME         STATUS   ROLES           AGE   VERSION
 
 k8s-master   Ready    control-plane   2m    v1.28.15
+
+ÉTAPE 4 : JOINDRE LES WORKERS AU CLUSTER
+
+C'est la dernière étape pour avoir un cluster complet !
+
+ansible-playbook -i inventory/hosts.yml playbooks/04-join-workers.yml
+```
+
+**Ce qui va se passer :**
+- 📝 Lecture de la commande de jointure depuis `/tmp/k8s_join_command.sh`
+- 🔗 Jonction de **worker1**, **worker2**, **worker3** au cluster
+- ⏳ Attente que tous les nodes soient **Ready**
+- ✅ Affichage de la liste complète des nodes
+
+**⏱️ Durée estimée : 2-3 minutes**
+
+1. Vérifier tous les nodes depuis le master
+
+ssh -i ~/.ssh/id_rsa_proxmox_templates ubuntu@10.0.0.10 "kubectl get nodes"
+
+NAME          STATUS   ROLES           AGE     VERSION
+k8s-master    Ready    control-plane   4m14s   v1.28.15
+k8s-worker1   Ready    <none>          59s     v1.28.15
+k8s-worker2   Ready    <none>          59s     v1.28.15
+k8s-worker3   Ready    <none>          59s     v1.28.15
+
+2. Vérifier les pods système
+
+ssh -i ~/.ssh/id_rsa_proxmox_templates ubuntu@10.0.0.10 "kubectl get pods -A"
+NAMESPACE      NAME                                 READY   STATUS    RESTARTS   AGE
+kube-flannel   kube-flannel-ds-lbfvz                1/1     Running   0          2m54s
+kube-flannel   kube-flannel-ds-lm5lt                1/1     Running   0          2m54s
+kube-flannel   kube-flannel-ds-qzg4r                1/1     Running   0          5m52s
+kube-flannel   kube-flannel-ds-t6cpf                1/1     Running   0          2m54s
+kube-system    coredns-5dd5756b68-ggmhv             1/1     Running   0          5m51s
+kube-system    coredns-5dd5756b68-jxznj             1/1     Running   0          5m51s
+kube-system    etcd-k8s-master                      1/1     Running   0          6m7s
+kube-system    kube-apiserver-k8s-master            1/1     Running   0          6m7s
+kube-system    kube-controller-manager-k8s-master   1/1     Running   0          6m5s
+kube-system    kube-proxy-6qm9g                     1/1     Running   0          5m52s
+kube-system    kube-proxy-bnl68                     1/1     Running   0          2m54s
+kube-system    kube-proxy-fs2vw                     1/1     Running   0          2m54s
+kube-system    kube-proxy-vzznq                     1/1     Running   0          2m54s
+kube-system    kube-scheduler-k8s-master            1/1     Running   0          6m5s
+
+3. Récupérer le kubeconfig sur VOTRE poste
+Pour gérer le cluster depuis votre machine (sans SSH) :
+# Créer le répertoire .kube s'il n'existe pas
+mkdir -p ~/.kube
+# Copier le kubeconfig depuis le master
+scp ubuntu@10.0.0.10:~/.kube/config ~/.kube/config
+# Tester depuis votre poste
+kubectl get nodes
+kubectl get pods -A
+
+
