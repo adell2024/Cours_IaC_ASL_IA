@@ -253,3 +253,68 @@ logs / exec → Pod uniquement
 Lors de l’utilisation de kubectl exec, la commande doit cibler un Pod et non un Deployment.
 Dans certaines versions de kubectl, l’exécution directe sur un Deployment peut provoquer un panic interne du client (nil pointer dereference).
 Il est donc recommandé de récupérer explicitement le nom du pod avant d’utiliser kubectl exec.
+
+Vérifions que les données stockées dans MariaDB persistent après :
+
+la suppression du Pod
+
+le redémarrage du Deployment
+
+Grâce à l’utilisation d’un PersistentVolume + PersistentVolumeClaim.
+### 🅰️ Étape 1 – Se connecter à MariaDB depuis un Pod client
+
+### 🅱️ Étape 2 – Créer une table et insérer des données
+
+Dans le shell MariaDB :
+
+USE mabase;
+
+CREATE TABLE utilisateurs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(50),
+  email VARCHAR(100)
+);
+
+INSERT INTO utilisateurs (nom, email)
+VALUES
+  ('Alice', 'alice@example.com'),
+  ('Bob', 'bob@example.com');
+
+SELECT * FROM utilisateurs;
+
+### 🅲 Étape 3 – Supprimer le Pod MariaDB
+
+kubectl get pods -l app=mariadb
+
+kubectl delete pod <nom-du-pod-mariadb>
+
+📌 Le Deployment recrée automatiquement un nouveau Pod.
+
+kubectl get pods -l app=mariadb
+
+kubectl get pods -l app=mariadb
+
+### 🅳 Étape 4 – Vérifier que les données sont toujours présentes
+
+Relancer le client MariaDB.Puis :
+
+USE mabase;
+SELECT * FROM utilisateurs;
+
+### ✅ Les données doivent toujours être présentes.
+
+🧠 Explication
+
+Le Pod a été supprimé 👉 éphémère
+
+Le volume (PersistentVolume) est resté 👉 persistant
+
+Les données sont stockées dans :
+
+/mnt/data-mariadb
+
+
+
+
+
+
