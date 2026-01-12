@@ -68,4 +68,19 @@ ansible-playbook -i inventory/hosts.yml playbooks/02-install-k8s.yml
 
 **⏱️ Durée estimée : 5-10 minutes** (téléchargement des paquets depuis Internet)
 
+⚙️ ÉTAPE 3 : INITIALISATION DU MASTER
+
+Maintenant, on va initialiser le cluster Kubernetes sur le master :
+
+ansible-playbook -i inventory/hosts.yml playbooks/03-init-master.yml
+```
+
+**Ce qui va se passer :**
+- 🚀 Initialisation du cluster avec `kubeadm init`
+- 🌐 Installation du réseau **Flannel** (CNI)
+- 🔑 Génération du **token de jointure** pour les workers
+- 📁 Configuration de **kubectl** pour l'utilisateur ubuntu
+- 💾 Sauvegarde de la commande de jointure dans `/tmp/k8s_join_command.sh`
+
+**⏱️ Durée estimée : 3-5 minutes**
 
