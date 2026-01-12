@@ -19,8 +19,7 @@ La base MariaDB nécessite un mot de passe root.
 
 Pour des raisons de sécurité, celui-ci est stocké dans un Secret Kubernetes.
 
-kubectl create secret generic mariadb-pass \
-  --from-literal=password=supersecret
+kubectl create secret generic mariadb-pass --from-literal=password=supersecret
   
 Vérification :
 
@@ -164,8 +163,7 @@ Le Service est en ClusterIP
 
 Créer un pod client temporaire :
 
-kubectl get secret mariadb-pass \
-  -o jsonpath="{.data.password}" | base64 -d
+kubectl get secret mariadb-pass -o jsonpath="{.data.password}" | base64 -d
 
 kubectl run mariadb-client --rm -it \
   --image=mariadb:10.6 \
