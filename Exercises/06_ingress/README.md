@@ -15,9 +15,10 @@ Ingress permet de router le trafic HTTP/S vers différents services en fonction 
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-Ensuite tu peux vérifier que les ressources sont créées :
+Ensuite vous pouvez vérifier que les ressources sont créées :
 
 kubectl get pods -n ingress-nginx
+
 kubectl get svc -n ingress-nginx
 
 📌 Notes importantes
@@ -32,11 +33,21 @@ kubectl get all -n ingress-nginx
 
 kubectl describe deployment ingress-nginx-controller -n ingress-nginx
 
+ kubectl get svc -n ingress-nginx
+
+
+
+
 Tu dois voir :
 
 Un Deployment ingress-nginx-controller
 
 Un Service exposé (LoadBalancer ou NodePort selon l’environnement)
+
+| Name                               | Type         | Cluster-IP    | External-IP | Port(s)                    | Age |
+| ---------------------------------- | ------------ | ------------- | ----------- | -------------------------- | --- |
+| ingress-nginx-controller           | LoadBalancer | 10.102.117.34 | <pending>   | 80:31337/TCP,443:32176/TCP | 94m |
+| ingress-nginx-controller-admission | ClusterIP    | 10.97.76.189  | <none>      | 443/TCP                    | 94m |
 
 ### Étape 2 — Créer un Ingress pour votre service Nginx
 
