@@ -42,6 +42,8 @@ kubectl get svc
 
 Créer un pod temporaire pour tester l’accès au service :
 
+kubectl run testpod --rm -i --tty --image=busybox --restart=Never -- /bin/sh
+
 À l’intérieur du pod :
 
 wget -qO- http://web-service-unique
