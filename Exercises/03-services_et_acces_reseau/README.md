@@ -28,7 +28,33 @@ Pas d’EXTERNAL-IP (service interne uniquement)
 
 ### Étape 2 — Tester l’accès interne depuis un pod
 
-kubectl run curlpod --image=radial/busyboxplus:curl -i --tty
+kubectl run curlpod --image=alpine --restart=Never -i --tty -- /bin/sh
+
+Puis à l’intérieur du pod :
+
+curl http://nginx:80
+
+✔️ Vous devez voir la page NGINX s’afficher.
+
+### Étape 3 — Créer un Service NodePort (externe)
+
+kubectl expose deployment nginx --port=80 --type=NodePort
+
+kubectl get svc nginx
+
+Exemple de sortie:
+
+| NAME  | TYPE     | CLUSTER-IP     | EXTERNAL-IP | PORT(S)      | AGE |
+| ----- | -------- | -------------- | ----------- | ------------ | --- |
+| nginx | NodePort | 10.100.117.217 | <none>      | 80:31078/TCP | 15m |
+
+### Étape 4 — Tester l’accès depuis l’extérieur (votre poste de pilotage)
+
+Depuis votre poste ou un autre terminal :
+
+Exemple:
+
+curl http://10.0.0.11:31078
 
 
 
