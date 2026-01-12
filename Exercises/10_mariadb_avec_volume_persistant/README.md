@@ -313,7 +313,9 @@ Les données sont stockées dans :
 
 /mnt/data-mariadb
 
-
+Cet exercice montre que Kubernetes ne persiste pas les données par défaut.
+La persistance est assurée uniquement via des volumes.
+Même si un Pod est recréé, les données restent accessibles tant que le volume persistant existe.
 
 
 
