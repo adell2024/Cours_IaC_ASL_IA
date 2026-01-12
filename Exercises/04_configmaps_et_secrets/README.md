@@ -69,6 +69,9 @@ Les valeurs sont encodées en Base64 et ne sont pas visibles en clair.
 
 ### 4️⃣ Injecter le Secret dans un pod
 
+
+Créer le fichier pod-secret.yaml 
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -88,6 +91,7 @@ spec:
 Déployer et vérifier :
 
 kubectl apply -f pod-secret.yaml
+
 kubectl exec -it nginx-secret-test -- printenv DB_PASSWORD
 
 ✅ Résultat attendu
