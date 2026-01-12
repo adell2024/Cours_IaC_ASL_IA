@@ -73,6 +73,10 @@ Tester l’accès depuis un pod curl ou directement depuis le nœud :
 
 kubectl run curlpod --rm -i --tty --image=curlimages/curl --restart=Never -- curl http://NodeIP:NodePort
 
+kubectl run curlpod --rm -i --tty --image=curlimages/curl --restart=Never -- curl http://CLUSTER-IP
+
+curl  http://NodeIP:NodePort
+
 ✅ Résultat attendu : page d’accueil NGINX
 
 ### Étape 5 — Scaling du Deployment
