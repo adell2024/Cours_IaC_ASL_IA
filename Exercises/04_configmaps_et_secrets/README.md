@@ -20,7 +20,6 @@
 
 Exemple : configuration d’un message de bienvenue pour NGINX :
 
-```bash
 kubectl create configmap nginx-config \
   --from-literal=welcome_message="Bienvenue sur mon cluster Kubernetes !"
 
