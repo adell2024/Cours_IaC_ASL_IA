@@ -40,8 +40,8 @@ Vérifiez les journaux Ansible pour détecter toute erreur avant de passer au pl
 Les tâches critiques sont idempotentes : vous pouvez relancer un playbook sans risque de casser la configuration existante.
 
 🚀 ÉTAPE 1 : PRÉPARATION DES NODES
+
 ansible-playbook -i inventory/hosts.yml playbooks/01-prepare-nodes.yml
-```
 
 **Lancez cette commande et observez l'exécution.**
 
@@ -52,32 +52,20 @@ ansible-playbook -i inventory/hosts.yml playbooks/01-prepare-nodes.yml
 - Configuration des paramètres réseau
 
 **Durée estimée : 2-3 minutes**
-
----
-
-## 📋 **Pendant que ça tourne, voici ce que vous pouvez observer :**
-
-Vous allez voir des lignes comme :
-```
-TASK [Mettre à jour le cache APT] **********************
-ok: [k8s-master]
-ok: [k8s-worker1]
-ok: [k8s-worker2]
-ok: [k8s-worker3]
-
-TASK [Désactiver le swap immédiatement] ****************
-changed: [k8s-master]
-changed: [k8s-worker1]
-...
-```
-
----
-
-## ✅ **À la fin, vous devriez voir :**
-```
-PLAY RECAP *********************************************
-k8s-master     : ok=XX   changed=XX   unreachable=0    failed=0
-k8s-worker1    : ok=XX   changed=XX   unreachable=0    failed=0
-k8s-worker2    : ok=XX   changed=XX   unreachable=0    failed=0
-k8s-worker3    : ok=XX   changed=XX   unreachable=0    failed=0
 Si vous voyez failed=0 partout, c'est parfait ! ✅
+
+🔧 ÉTAPE 2 : INSTALLATION DE KUBERNETES
+
+Maintenant, installons Kubernetes sur tous les nodes :
+
+ansible-playbook -i inventory/hosts.yml playbooks/02-install-k8s.yml
+
+**Ce qui va se passer :**
+- Installation de **containerd** (runtime de conteneurs)
+- Installation de **kubeadm**, **kubelet**, **kubectl** version 1.28
+- Configuration de containerd avec SystemdCgroup
+- Verrouillage des versions
+
+**⏱️ Durée estimée : 5-10 minutes** (téléchargement des paquets depuis Internet)
+
+
