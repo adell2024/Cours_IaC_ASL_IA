@@ -175,7 +175,7 @@ kubectl run mariadb-client --rm -it \
 
 📌 MariaDB utilise automatiquement MYSQL_PWD si elle existe.
 
-🧠 Point pédagogique important (à mettre en évidence dans le cours)
+🧠 Point important
 🔹 Le Secret est scopé au pod
 
 Un Secret :
@@ -184,12 +184,7 @@ Un Secret :
 
 ❌ n’est pas partagé automatiquement
 
-Il doit être :
-
-monté
-
-ou injecté
-explicitement dans chaque pod
+Il doit être : monté ou injecté explicitement dans chaque pod
 
 👉 Sécurité par défaut de Kubernetes
 
@@ -216,6 +211,7 @@ trouver un Pod
 s’y connecter
 
 🔹 Toujours exécuter kubectl exec sur un Pod, pas un Deployment
+
 1️⃣ Récupérer le nom exact du pod
 
 kubectl get pods -l app=mariadb
@@ -228,18 +224,18 @@ mariadb-7c6c9b8d7f-abcde
 
 kubectl exec -it mariadb-7c6c9b8d7f-abcde -- env | grep MARIADB
 
-📌 À noter (important pour le cours)
+📌 À noter 
 
 kubectl exec deploy/xxx peut fonctionner sur certaines versions,
 mais ce n’est pas fiable et peut provoquer des erreurs internes.
 
-👉 Bonne règle pédagogique :
+👉 Bonne règle :
 
 get / describe → Deployment, Service
 
 logs / exec → Pod uniquement
 
-🧠 À mettre sur GitHub (texte prêt)
+🧠 important
 
 Lors de l’utilisation de kubectl exec, la commande doit cibler un Pod et non un Deployment.
 Dans certaines versions de kubectl, l’exécution directe sur un Deployment peut provoquer un panic interne du client (nil pointer dereference).
