@@ -84,3 +84,6 @@ ansible-playbook -i inventory/hosts.yml playbooks/03-init-master.yml
 
 **⏱️ Durée estimée : 3-5 minutes**
 
+🔍 Point important :
+À la fin, un fichier /tmp/k8s_join_command.sh sera créé sur votre poste avec la commande pour joindre les workers.Faites une copie de sauvegarde de ce fichier.
+
