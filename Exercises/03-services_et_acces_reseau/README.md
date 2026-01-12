@@ -56,5 +56,16 @@ Exemple:
 
 curl http://10.0.0.11:31078
 
+✔️ Vous devez voir la page d’accueil NGINX.
+
+✅ Résultat attendu
+
+Service ClusterIP accessible uniquement interne au cluster
+
+Service NodePort accessible depuis l’extérieur
+
+Les pods répondent correctement via les deux types de Service
+
+
 
 
