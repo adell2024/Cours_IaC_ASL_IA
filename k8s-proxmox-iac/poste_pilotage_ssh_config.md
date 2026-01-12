@@ -1,4 +1,4 @@
-## 🔐 Configurer SSH avec un fichier `config` (RECOMMANDÉ)
+## 🔐 Configurer SSH avec un fichier `config`
 
 ### 🛠️ Créer ou éditer le fichier de configuration SSH
 
@@ -48,5 +48,8 @@ ssh k8s-master
 # Ou directement avec l’adresse IP
 ssh 10.0.0.10
 # Exemple avec kubectl
+
 ssh k8s-master "kubectl get nodes"
+ou plus simplement:
+kubectl get nodes
 
