@@ -29,6 +29,7 @@ kubectl get configmap nginx-config -o yaml
 
 Créer le fichier pod-configmap.yaml :
 
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -43,6 +44,7 @@ spec:
         configMapKeyRef:
           name: nginx-config
           key: welcome_message
+```
 
 
 Déployer le pod :
@@ -63,15 +65,11 @@ kubectl create secret generic db-secret \
 
 kubectl get secret db-secret -o yaml
 
-kubectl create secret generic db-secret \
-  --from-literal=password='MonSuperMotDePasse'
-
-kubectl get secret db-secret -o yaml
-
 Les valeurs sont encodées en Base64 et ne sont pas visibles en clair.
 
 ### 4️⃣ Injecter le Secret dans un pod
 
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -86,9 +84,16 @@ spec:
         secretKeyRef:
           name: db-secret
           key: password
-
+```
 Déployer et vérifier :
 
 kubectl apply -f pod-secret.yaml
 kubectl exec -it nginx-secret-test -- printenv DB_PASSWORD
 
+✅ Résultat attendu
+
+Les ConfigMaps permettent de passer des informations de configuration aux pods
+
+Les Secrets permettent de passer des informations sensibles en toute sécurité
+
+Les pods récupèrent correctement ces valeurs via variables d’environnement ou volumes montés
