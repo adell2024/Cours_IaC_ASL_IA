@@ -1,4 +1,4 @@
-# 🧪 Exercice 03 — Déploiement avec ConfigMap comme volume
+# 🧪 Exercice 09 — Déploiement avec ConfigMap comme volume
 🎯 Objectif
 
 Apprendre à injecter du contenu statique dans un pod via un ConfigMap monté comme volume, et observer comment NGINX lit automatiquement ce contenu.
