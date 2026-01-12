@@ -1,1 +1,37 @@
-TEst
+🚀 Étape 1 : Préparation de l'Infrastructure (Template Proxmox)
+
+Avant de déployer votre application avec Terraform ou Kubernetes, vous devez préparer l'image de base (template) sur votre nœud Proxmox. Nous utilisons un script d'automatisation qui configure une image Ubuntu Noble 24.04 LTS optimisée avec cloud-init et le qemu-guest-agent.
+📋 Prérequis
+
+    Un accès SSH root à votre nœud Proxmox.
+
+    Votre clé SSH publique configurée sur le nœud pour une connexion sans mot de passe.
+
+    Les bridges réseaux vmbr0 et vmbr1 configurés sur Proxmox.
+
+🛠️ Exécution du script de création
+
+Le script create_vm_template.sh s'exécute depuis votre poste de travail local. Il va générer une clé SSH dédiée pour vos futures VMs, la transférer sur Proxmox, et piloter la création du template à distance.
+
+    Rendez le script exécutable :
+    Bash
+
+chmod +x create_vm_template.sh
+
+Lancez la création du template : Vous devez spécifier le type de stockage cible (local-lvm ou nfs) en argument.
+Bash
+
+    # Exemple pour un stockage local-lvm
+    ./create_vm_template.sh local-lvm
+
+🔍 Ce que fait ce script :
+
+    Génération de clé : Crée une paire de clés SSH (id_rsa_proxmox_templates) sur votre machine pour sécuriser l'accès aux futures VMs.
+
+    Provisioning Cloud-Init : Configure l'utilisateur par défaut (ubuntu), le mot de passe (azerty) et injecte votre clé publique.
+
+    Optimisation : Installe automatiquement le qemu-guest-agent et effectue les mises à jour système (apt upgrade) au premier démarrage.
+
+    Réseau : Prépare une configuration dual-stack (Management/Data) prête à être pilotée par Terraform.
+
+    [!IMPORTANT] Temps d'attente : Lors du premier déploiement d'une VM basée sur ce template, prévoyez 5 à 10 minutes pour que cloud-init termine les mises à jour et l'installation des paquets.
