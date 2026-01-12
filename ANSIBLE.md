@@ -84,6 +84,31 @@ ansible-playbook -i inventory/hosts.yml playbooks/03-init-master.yml
 
 **⏱️ Durée estimée : 3-5 minutes**
 
-🔍 Point important :
-À la fin, un fichier /tmp/k8s_join_command.sh sera créé sur votre poste avec la commande pour joindre les workers.Faites une copie de sauvegarde de ce fichier.
+⚙️ ÉTAPE 3 : INITIALISATION DU MASTER
 
+Maintenant, on va initialiser le cluster Kubernetes sur le master :
+
+ansible-playbook -i inventory/hosts.yml playbooks/03-init-master.yml
+```
+
+**Ce qui va se passer :**
+- 🚀 Initialisation du cluster avec `kubeadm init`
+- 🌐 Installation du réseau **Flannel** (CNI)
+- 🔑 Génération du **token de jointure** pour les workers
+- 📁 Configuration de **kubectl** pour l'utilisateur ubuntu
+- 💾 Sauvegarde de la commande de jointure dans `/tmp/k8s_join_command.sh`
+
+**⏱️ Durée estimée : 3-5 minutes**
+
+🔍 Point important :
+À la fin, un fichier /tmp/k8s_join_command.sh sera créé sur votre poste avec la commande pour joindre les workers.Ce fichier (script) sera utilisé pour joindre les workers. Faites une copie de sauvegarde de ce fichier.
+
+🔍  Vérifier le master depuis SSH (optionnel mais intéressant):
+
+ssh ubuntu@10.0.0.10 "kubectl get nodes"
+
+**Vous devriez voir :**
+
+NAME         STATUS   ROLES           AGE   VERSION
+
+k8s-master   Ready    control-plane   2m    v1.28.15
