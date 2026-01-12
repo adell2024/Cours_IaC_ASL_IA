@@ -1,4 +1,4 @@
-# 🧪 Exercice 05 — ConfigMaps & Secrets
+# 🧪 Exercice 04 — ConfigMaps & Secrets
 
 > 🎯 **Objectif :**  
 > Apprendre à **gérer la configuration et les secrets** dans Kubernetes afin que les applications restent **découplées de leur configuration** et que les informations sensibles soient protégées.
