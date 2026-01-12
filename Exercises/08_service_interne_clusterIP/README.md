@@ -1,4 +1,4 @@
-# 🧪 Exercice 02 — Services internes avec ClusterIP
+# 🧪 Exercice 08 — Services internes avec ClusterIP
 🎯 Objectif
 
 Apprendre à exposer un Deployment uniquement à l’intérieur du cluster avec un service de type ClusterIP, et vérifier que les pods du Deployment sont bien accessibles via ce service.
