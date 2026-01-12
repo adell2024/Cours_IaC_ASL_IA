@@ -1,4 +1,4 @@
-# 🧪 Exercice 04 — Services Kubernetes et accès réseau
+# 🧪 Exercice 03 — Services Kubernetes et accès réseau
 
 ## 🎯 Objectif
 Comprendre comment Kubernetes expose une application à l’intérieur et à l’extérieur du cluster
