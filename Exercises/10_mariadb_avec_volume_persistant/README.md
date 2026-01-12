@@ -13,7 +13,7 @@ Comprendre le rôle de nodeSelector avec un hostPath
 
 Exposer la base via un Service interne (ClusterIP)
 
-🧩 Étape A — Création du Secret
+### 🧩 Étape A — Création du Secret
 
 La base MariaDB nécessite un mot de passe root.
 
@@ -33,7 +33,7 @@ kubectl describe secret mariadb-pass
 
 Permet une gestion séparée des données sensibles
 
-🧩 Étape B — Création du PersistentVolume (PV)
+### 🧩 Étape B — Création du PersistentVolume (PV)
 
 Fichier mariadb-pv.yaml
 
@@ -60,9 +60,24 @@ kubectl get pv
 
 hostPath crée le stockage localement sur le nœud
 
-Ce type de volume est pédagogique, pas recommandé en production
+Ce type de volume est pédagogique, pas recommandé en production.
 
-🧩 Étape C — Création du PersistentVolumeClaim (PVC)
+Le PersistentVolume utilise un hostPath, ce qui implique que le dossier ciblé doit exister sur le nœud hébergeant le Pod.
+Comme le Deployment force l’exécution sur k8s-worker1, le répertoire /mnt/data-mariadb doit être créé manuellement sur ce nœud, avec les droits adaptés, avant le déploiement.
+
+1️⃣ Se connecter sur le bon worker
+
+ssh k8s-worker1
+
+2️⃣ Créer le dossier
+
+sudo mkdir -p /mnt/data-mariadb
+
+sudo chmod 777 /mnt/data-mariadb
+
+sudo chown -R 999:999 /mnt/data-mariadb
+
+### 🧩 Étape C — Création du PersistentVolumeClaim (PVC)
 
 Fichier mariadb-pvc.yaml :
 
@@ -86,7 +101,7 @@ kubectl get pvc
 
 📌 Le PVC permet au pod de demander dynamiquement du stockage sans connaître le PV exact.
 
-🧩 Étape D — Déploiement de MariaDB
+### 🧩 Étape D — Déploiement de MariaDB
 
 Fichier mariadb-deploy.yaml :
 
