@@ -26,7 +26,7 @@ kubectl create configmap nginx-config \
 
 kubectl get configmap nginx-config -o yaml
 
-2️⃣ Injecter le ConfigMap dans un pod
+### 2️⃣ Injecter le ConfigMap dans un pod
 
 Créer le fichier pod-configmap.yaml :
 
@@ -55,7 +55,7 @@ Vérifier la variable d’environnement :
 kubectl exec -it nginx-config-test -- printenv WELCOME_MESSAGE
 
 
-3️⃣ Créer un Secret
+### 3️⃣ Créer un Secret
 
 Exemple : stocker un mot de passe pour la base de données :
 
@@ -71,7 +71,7 @@ kubectl get secret db-secret -o yaml
 
 Les valeurs sont encodées en Base64 et ne sont pas visibles en clair.
 
-4️⃣ Injecter le Secret dans un pod
+### 4️⃣ Injecter le Secret dans un pod
 
 apiVersion: v1
 kind: Pod
