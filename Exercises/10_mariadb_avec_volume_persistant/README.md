@@ -144,3 +144,103 @@ Application :
 
 kubectl apply -f mariadb-deploy.yaml
 
+🔍 Vérifications
+
+kubectl get pods -o wide
+
+kubectl get svc
+
+kubectl describe pod mariadb
+
+Vérifier que :
+
+Le pod est bien lancé sur k8s-worker1
+
+Le PVC est bien monté
+
+Le Service est en ClusterIP
+
+🧪 Test de connexion à la base
+
+Créer un pod client temporaire :
+
+kubectl get secret mariadb-pass \
+  -o jsonpath="{.data.password}" | base64 -d
+
+kubectl run mariadb-client --rm -it \
+  --image=mariadb:10.6 \
+  --env="MYSQL_PWD=supersecret" \
+  --restart=Never -- \
+  mariadb -h mariadb-service -u root
+
+📌 MariaDB utilise automatiquement MYSQL_PWD si elle existe.
+
+🧠 Point pédagogique important (à mettre en évidence dans le cours)
+🔹 Le Secret est scopé au pod
+
+Un Secret :
+
+❌ n’est pas global au cluster
+
+❌ n’est pas partagé automatiquement
+
+Il doit être :
+
+monté
+
+ou injecté
+explicitement dans chaque pod
+
+👉 Sécurité par défaut de Kubernetes
+
+🧪 Vérification côté serveur (bonus)
+
+kubectl exec -it deploy/mariadb -- env | grep MARIADB
+
+Résultat attendu :
+
+MARIADB_ROOT_PASSWORD=********
+
+MARIADB_DATABASE=mabase
+
+deploy/mariadb est un Deployment
+
+kubectl exec attend un Pod
+
+kubectl est censé :
+
+résoudre le Deployment
+
+trouver un Pod
+
+s’y connecter
+
+🔹 Toujours exécuter kubectl exec sur un Pod, pas un Deployment
+1️⃣ Récupérer le nom exact du pod
+
+kubectl get pods -l app=mariadb
+
+Exemple de sortie :
+
+mariadb-7c6c9b8d7f-abcde
+
+2️⃣ Exécuter la commande correctement
+
+kubectl exec -it mariadb-7c6c9b8d7f-abcde -- env | grep MARIADB
+
+📌 À noter (important pour le cours)
+
+kubectl exec deploy/xxx peut fonctionner sur certaines versions,
+mais ce n’est pas fiable et peut provoquer des erreurs internes.
+
+👉 Bonne règle pédagogique :
+
+get / describe → Deployment, Service
+
+logs / exec → Pod uniquement
+
+🧠 À mettre sur GitHub (texte prêt)
+
+Lors de l’utilisation de kubectl exec, la commande doit cibler un Pod et non un Deployment.
+Dans certaines versions de kubectl, l’exécution directe sur un Deployment peut provoquer un panic interne du client (nil pointer dereference).
+Il est donc recommandé de récupérer explicitement le nom du pod avant d’utiliser kubectl exec.
