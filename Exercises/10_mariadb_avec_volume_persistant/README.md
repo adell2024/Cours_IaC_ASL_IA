@@ -1,4 +1,4 @@
-# 🧪 Exercice 04 — Déployer MariaDB avec stockage persistant
+# 🧪 Exercice 10 — Déployer MariaDB avec stockage persistant
 🎯 Objectifs pédagogiques
 
 À la fin de cet exercice, vous devriez être capable de :
