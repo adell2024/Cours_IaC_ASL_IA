@@ -167,4 +167,15 @@ scp ubuntu@10.0.0.10:~/.kube/config ~/.kube/config
 kubectl get nodes
 kubectl get pods -A
 
+# 🎯 RÉCAPITULATIF DE CE QUI A ÉTÉ FAIT
+
+| Étape           | Commande           | Résultat                                |
+|-----------------|------------------|----------------------------------------|
+| ✅ Terraform    | `terraform apply` | 4 VMs créées                            |
+| ✅ Ansible 1    | Préparation nodes | Swap désactivé, sysctl configuré       |
+| ✅ Ansible 2    | Installation K8s  | Kubernetes 1.28.15 installé            |
+| ✅ Ansible 3    | Init master       | Cluster initialisé, Flannel déployé    |
+| ✅ Ansible 4    | Join workers      | 4 nodes dans le cluster                 |
+
+
 
