@@ -1,4 +1,4 @@
-# Exercice 08 — Déploiement et Scaling avec Deployment
+# Exercice 07 — Déploiement et Scaling avec Deployment
 🎯 Objectif
 
 Apprendre à :
