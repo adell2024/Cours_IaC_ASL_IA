@@ -200,7 +200,7 @@ kubectl exec -it mariadb-6bdb6b75c-zxxrv -- mariadb -uroot -p
 
 Exécuter :
 
-kubectl rollout restart deployment/php-app
+kubectl rollout restart deployment/new-php-app
 
 ### ➡️ Cela force la recréation des Pods et la relecture du code PHP.
 
