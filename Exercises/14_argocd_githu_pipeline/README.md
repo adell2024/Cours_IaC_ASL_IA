@@ -142,7 +142,8 @@ bade6e6aa901f04120ab28376b75bcbb7a5e0caa        HEAD
 bade6e6aa901f04120ab28376b75bcbb7a5e0caa        refs/heads/main
 
 
-###🔹 PARTIE B – Déploiement
+### 🧩 C–  Déploiement
+
 1️⃣ Déployer PostgreSQL
 
 Créer le ConfigMap pour la configuration DB
@@ -164,16 +165,16 @@ kubectl get svc postgres-service
 
 (fait côté local, puis push sur DockerHub)
 
-# Se placer dans le dossier app
+Se placer dans le dossier app
 cd app
 
-# Construire l'image (exemple : DockerHub user "etu2026")
+Construire l'image (exemple : DockerHub user "etu2026")
 docker build -t etu2026/flask-app:latest .
 
-# Se connecter à DockerHub
+Se connecter à DockerHub
 docker login
 
-# Publier l'image
+Publier l'image
 docker push etu2026/flask-app:latest
 
 3️⃣ Déployer l’application Flask via Kubernetes
@@ -185,18 +186,19 @@ kubectl apply -f k8s/flask-app.yaml
 Vérifier les pods Flask
 kubectl get pods -l app=flask
 
-# Vérifier le service Flask
+Vérifier le service Flask
 kubectl get svc flask-service
 
 
 4️⃣ Déployer l’Ingress (si vous utilisez un Ingress Controller NGINX)
-# Déployer l’Ingress
+
+Déployer l’Ingress
 kubectl apply -f k8s/ingress.yaml
 
-# Vérifier les ingress
+Vérifier les ingress
 kubectl get ingress
 
-# Tester depuis un pod curl ou votre navigateur
+Tester depuis un pod curl ou votre navigateur
 kubectl run curlpod --rm -it --image=curlimages/curl --restart=Never -- curl http://flask.lab
 
 ⚠️ Pensez à ajouter flask.lab dans /etc/hosts pointant vers votre node ou LoadBalancer.
@@ -255,12 +257,11 @@ git push origin main
 
 Vérification avec ArgoCD :
 
-# Lister les applications ArgoCD
+Lister les applications ArgoCD
 kubectl get applications -n argocd
 
-# Vérifier l'état de synchronisation
+Vérifier l'état de synchronisation
 kubectl get application flask-postgres-app -n argocd
-
 
 L’état attendu après le push :
 
@@ -269,5 +270,5 @@ flask-postgres-app	OutOfSync	Healthy
 
 Attendre la synchronisation automatique :
 
-# Vérifier les pods Flask
+Vérifier les pods Flask
 kubectl get pods -l app=flask-app
