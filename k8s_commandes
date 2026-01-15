@@ -1,165 +1,146 @@
-Play with kubectl
-
 Get info about the cluster :
+Bash
 
 kubectl cluster-info
 
 Get the nodes :
+Bash
 
 kubectl get nodes
 
 With labels :
+Bash
 
 kubectl get nodes --show-labels
 
 Create a namespace :
+Bash
 
-kubectl create namespace devoxxfr
+kubectl create namespace insafr
 
 Set the context to this namespace :
+Bash
 
-kubectl config set-context --current --namespaceinsa23fr
-Your first deployment
+kubectl config set-context --current --namespace=insa23fr
+
+🚀 Your first deployment
 
 Monitor the events :
+Bash
 
 watch kubectl get events --sort-by=.metadata.creationTimestamp
 
 Create deployment :
+Bash
 
-kubectl create deployment insafr23 --image toto/insa23:1.0
+kubectl create deployment insafr23 --image=toto/insa23:1.0
 
-Display pods :
+Display pods and labels :
+Bash
 
 kubectl get pods
-
-with labels :
-
 kubectl get pods --show-labels
 
 Get into the pod :
+Bash
 
 kubectl exec -it pod-id -- /bin/bash
 
 Inside the pod :
+Bash
 
 curl localhost:8080/hello
 
-Describe pod :
+Manage the pod :
+Bash
 
 kubectl describe pod pod-id
-
-Delete a pod :
-
 kubectl delete pod pod-id
 
 Scale deployment :
+Bash
 
 kubectl scale deployment insafr23 --replicas 3
-Expose your deployment
+
+🌐 Expose your deployment
+
+Expose via LoadBalancer :
+Bash
 
 kubectl expose deployment insafr23 --port 8080 --type=LoadBalancer
 
-Get service :
+Get service info :
+Bash
 
 kubectl get service
+# If public IP is available : 
+curl public_ip:8080/hello
 
-If public IP is available : curl public_ip:8080/hello
-Roll-out new image
+🔄 Roll-out new image
 
-kubectl set image deployment/insafr23 devoxxfr23fr23=toto/devoxxfr23:2.0
-Apply manifests
+Update the container image :
+Bash
 
-Create new namespace :
+kubectl set image deployment/insafr23 insafr23fr23=toto/insafr23:2.0
 
-kubectl create deployment devoxxfr-manifests
+📄 Apply manifests
 
-kubectl config set-context --current --namespace=devoxxfr-manifests
-Apply deployment manifest
+Create and use a new namespace for manifests :
+Bash
+
+kubectl create namespace insafr-manifests
+kubectl config set-context --current --namespace=insafr-manifests
+
+Apply deployment manifest :
+Bash
 
 kubectl apply -f manifests/insafr23-v1-deployment.yml
 
 Edit deployment :
+Bash
 
 kubectl edit deployment/insafr23
+# Look for replicas, set it to 2, save and exit.
 
-Look for replicas , set it to 2 , save and exit.
-Apply Service manifest
+Apply Service manifest :
+Bash
 
 kubectl apply -f manifests/insafr23-service.yml
-Requests and Limits
 
-Setting just the cpu request (very high) and check pod going in pending status :
+⚖️ Requests and Limits
+
+Test high CPU request (check for pending status) :
+Bash
 
 kubectl apply -f manifests/insafr23-v1-deployment-10cpus.yml
 
-Setting requests and limits :
+Setting standard requests and limits :
+Bash
 
 kubectl apply -f manifests/insafr23-v1-deployment-limits.yml
-Health probes
+
+🩺 Health probes
+
+Deploy with health checks :
+Bash
 
 kubectl apply -f manifests/insafr23-v1-deployment-health.yml
 
-Go into the pod :
+Force the readiness probe to fail :
+Bash
 
 kubectl exec -it pod-id -- /bin/bash
-
-Force the readiness probe to fail :
-
+# Inside the pod :
 curl localhost:8080/health/misbehave
 
-Observe pod's status.
+Observe pod's status (it should stop receiving traffic).
 
 Make pod ready again :
+Bash
 
 curl localhost:8080/health/behave
 
-Make pod a zombie and make liveness check fail :
+Make pod a zombie (liveness check fail) :
+Bash
 
 curl localhost:8080/health/shoot
-
-Observice pod getting restarted.
-Playing with service selector
-
-Deploy a second version of the deployment :
-
-kubectl apply manifests/insa23-v2-deployment-health.yml
-
-2 new pods should appear (replicas is set to 2 for v2)
-
-Edit service :
-
-kubectl edit svc/insa23
-
-Look for selector section is set it to :
-
-selector:
-    app.kubernetes.io/name: insa23fr23-v2
-    app.kubernetes.io/version: "2.0"
-
-Save and exit.
-ConfigMap
-
-kubectl set env deployment/insa23-v2 GREETING=hola
-
-kubectl create cm my-config --from-env-file=my.properties
-
-kubectl apply -f manifests/insa23fr23-v1-deployment-configmap
-Secret
-
-kubectl create secret generic mysecret --from-literal=user='MyUserName' --from-literal=password='mypassword'
-
-kubectl get secret mysecret -o yaml
-
-kubectl replace -f manifests/insa23-v1-deployment-secrets.yml
-Taint
-
-kubectl describe nodes | egrep "Name:|Taints:"
-
-kubectl taint nodes --all=true color=blue:NoSchedule
-
-kubectl taint node devnation-m02 color:NoSchedule- 
-
-kubectl taint nodes --all=true color=blue:NoSchedule --overwrite
-
-kubectl label nodes devnation-m02 color=blue 
